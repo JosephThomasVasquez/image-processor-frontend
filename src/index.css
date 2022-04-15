@@ -13,10 +13,19 @@ code {
   /* color: #00ffff; */
 }
 
+.title {
+  text-align: center;
+}
+
 .sub-title {
   margin: 12px 0;
 }
 
-.text-fields {
-  margin: 12px 0;
+.text-field {
+  margin-bottom: 12px;
+}
+
+.original-image-file {
+  margin-top: 12px;
+  max-width: 100%;
 }

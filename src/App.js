@@ -1,5 +1,6 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import theme from "./utils/themeConfig";
+import Grid from "@mui/material/Grid";
 import ImageProcessor from "./imageProcessor/ImageProcessor";
 import OriginalImage from "./originalImage/OriginalImage";
 
@@ -7,11 +8,19 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <header className="App-header">Image Processor</header>
+        <header className="title">
+          <h1>Image Processor</h1>
+        </header>
         <div>
-          <OriginalImage />
+          <Grid container spacing={2}>
+            <Grid item lg={6} md={6} sm={12}>
+              <OriginalImage />
+            </Grid>
+            <Grid item lg={6} md={6} sm={12}>
+              <ImageProcessor />
+            </Grid>
+          </Grid>
         </div>
-        <ImageProcessor />
       </div>
     </ThemeProvider>
   );
