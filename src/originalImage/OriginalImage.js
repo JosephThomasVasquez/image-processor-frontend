@@ -10,6 +10,19 @@ const OriginalImage = () => {
     "https://images.unsplash.com/photo-1521747116042-5a810fda9664?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80"
   );
 
+  //   On file change handler
+  const changeHandler = ({ target }) => {
+    setImageFile(target.value);
+  };
+
+  //   On image load get original dimensions
+  const imageLoader = ({ target: img }) => {
+    console.log("this", img);
+    const { naturalWidth, naturalHeight } = img;
+
+    console.log(naturalWidth, naturalHeight);
+  };
+
   return (
     <div>
       <Container maxWidth="xl">
@@ -23,6 +36,7 @@ const OriginalImage = () => {
                 label="Image URL"
                 variant="outlined"
                 value={imageFile}
+                onChange={changeHandler}
                 fullWidth
               />
             </div>
@@ -33,7 +47,12 @@ const OriginalImage = () => {
             </Grid>
             <Grid item md={12}>
               <div></div>
-              <img className="original-image-file" src={imageFile} alt="" />
+              <img
+                onLoad={imageLoader}
+                className="original-image-file"
+                src={imageFile}
+                alt=""
+              />
             </Grid>
           </Grid>
         </Grid>
