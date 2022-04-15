@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Fab from "@mui/material/Fab";
+import MenuIcon from "@mui/icons-material/Menu";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
@@ -7,8 +9,7 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 const SideMenu = () => {
   const [toggleMenu, setToggleMenu] = useState({
@@ -26,6 +27,10 @@ const SideMenu = () => {
     setToggleMenu({ ...toggleMenu, [anchor]: open });
   };
 
+  const resetHandler = () => {
+    console.log("Reset");
+  };
+
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === "top" || anchor === "bottom" ? "auto" : 250 }}
@@ -35,9 +40,9 @@ const SideMenu = () => {
     >
       <List>
         {["Reset All"].map((text, index) => (
-          <ListItem button key={text}>
+          <ListItem button key={text} onClick={resetHandler}>
             <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              <RestartAltIcon />
             </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
@@ -52,9 +57,13 @@ const SideMenu = () => {
       {["left"].map((anchor) => (
         <React.Fragment key={anchor}>
           <div className="menu-button">
-            <Button variant="contained" onClick={toggleDrawer(anchor, true)}>
-              {"Menu"}
-            </Button>
+            <Fab
+              color="primary"
+              onClick={toggleDrawer(anchor, true)}
+              aria-label="add"
+            >
+              <MenuIcon />
+            </Fab>
           </div>
           <Drawer
             anchor={anchor}

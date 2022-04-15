@@ -65,7 +65,7 @@ const OriginalImage = () => {
             </Grid>
             {/* <div>Info</div> */}
             <Grid item md={12}>
-              Dimensions:{" "}
+              Details:{" "}
               {imageFile.originalWidth > 0 || imageFile.originalHeight > 0 ? (
                 <Chip
                   label={`W ${imageFile.originalWidth}px x H ${imageFile.originalHeight}px`}
