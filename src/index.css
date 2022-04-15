@@ -13,6 +13,10 @@ code {
   /* color: #00ffff; */
 }
 
+.menu-button {
+  margin: 24px;
+}
+
 .title {
   text-align: center;
 }

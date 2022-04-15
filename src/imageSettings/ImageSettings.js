@@ -10,6 +10,7 @@ const ImageSettings = () => {
     rotation: 0,
     brightness: 0,
     contrast: 0,
+    compression: 0,
   };
 
   const [imageSettings, setImageSettings] = useState({});

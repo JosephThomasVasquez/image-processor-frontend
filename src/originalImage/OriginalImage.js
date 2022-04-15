@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import ImageIcon from "@mui/icons-material/Image";
 
@@ -62,9 +63,14 @@ const OriginalImage = () => {
                 Load Photo
               </Button>
             </Grid>
-            <div>Info</div>
+            {/* <div>Info</div> */}
             <Grid item md={12}>
-              Dimensions:
+              Dimensions:{" "}
+              {imageFile.originalWidth > 0 || imageFile.originalHeight > 0 ? (
+                <Chip
+                  label={`W ${imageFile.originalWidth}px x H ${imageFile.originalHeight}px`}
+                />
+              ) : null}
             </Grid>
             <Grid item md={12}>
               {imageFile ? (
