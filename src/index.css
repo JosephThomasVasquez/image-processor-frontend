@@ -1,3 +1,8 @@
+html {
+  width: 100vw;
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -32,4 +37,8 @@ code {
 .original-image-file {
   margin-top: 12px;
   max-width: 100%;
+}
+
+.processing-image {
+  padding: 2px;
 }

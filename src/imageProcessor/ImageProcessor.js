@@ -281,7 +281,7 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
           </Grid>
 
           {/* PROCESS IMAGE */}
-          <Grid item xs={4} sm={4} md={6}>
+          <Grid item xs={6} sm={4} md={6}>
             <Button
               variant="contained"
               onClick={handleProcess}
@@ -292,7 +292,7 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
           </Grid>
 
           {/* DOWNLOAD */}
-          <Grid item xs={4} sm={4} md={6}>
+          <Grid item xs={6} sm={4} md={6}>
             <Button
               variant="contained"
               color="success"
@@ -305,12 +305,13 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
           {/* IMAGE PREVIEW */}
           <Grid item xs={12} sm={12} md={12}>
             {isLoading ? (
-              <Box sx={{ width: "100%" }}>
-                <LinearProgress />
-              </Box>
-            ) : null}
+              <LinearProgress />
+            ) : (
+              <div className="processing-image"></div>
+            )}
           </Grid>
-          <Grid item md={12}>
+
+          <Grid item xs={12} sm={12} md={12}>
             {processedImage ? (
               <img
                 onLoad={imageLoader}

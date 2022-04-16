@@ -8,7 +8,7 @@ import OriginalImage from "./originalImage/OriginalImage";
 
 function App() {
   const initialFileData = {
-    url: "https://images.unsplash.com/photo-1521747116042-5a810fda9664?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80",
+    url: "",
     originalWidth: 0,
     originalHeight: 0,
   };
