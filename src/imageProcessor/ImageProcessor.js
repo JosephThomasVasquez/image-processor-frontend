@@ -1,24 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { processImage } from "../utils/api";
 import Container from "@mui/material/Container";
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Slider from "@mui/material/Slider";
 import FormGroup from "@mui/material/FormGroup";
+import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Checkbox from "@mui/material/Checkbox";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 import CropRotateIcon from "@mui/icons-material/CropRotate";
 import ImageIcon from "@mui/icons-material/Image";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import HeightIcon from "@mui/icons-material/Height";
 
 const ImageProcessor = ({ imageFile, setImageFile }) => {
   const initialSettings = {
     name: "default",
     url: imageFile.url,
-    format: "png",
+    format: "jpeg",
     Width: 256,
     Height: 256,
     aspectWidth: false,
@@ -31,6 +38,8 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
     inverted: false,
     quality: 85,
   };
+
+  const [isLoading, setIsLoading] = useState(false);
   const [imageSettings, setImageSettings] = useState({ ...initialSettings });
   const [processedImage, setProcessedImage] = useState(null);
 
@@ -42,18 +51,18 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
   }, [imageFile]);
 
   useEffect(() => {
-    // console.log("processed", processedImage);
+    console.log("processed", processedImage);
   }, [processedImage]);
 
   // handle value changes
   const handleChange = ({ target }) => {
-    console.log(target.name);
+    // console.log(target.name);
     setImageSettings({ ...imageSettings, [target.name]: target.value });
   };
 
   // Handle switches
   const handleSwitch = ({ target }) => {
-    console.log(target.checked);
+    // console.log(target.checked);
     setImageSettings({ ...imageSettings, [target.name]: target.checked });
   };
 
@@ -62,15 +71,23 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
     setProcessedImage(processedImage);
   };
 
+  // Select format
+  const handleSelectFormat = ({ target }) => {
+    // console.log(target.name);
+    setImageSettings({ ...imageSettings, format: target.value });
+  };
+
   const handleProcess = async () => {
     const abortController = new AbortController();
     try {
+      setIsLoading(true);
       const response = await processImage(
         imageSettings,
         abortController.abort()
       );
 
       await response.json().then((data) => setProcessedImage(data.data));
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -85,7 +102,7 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
 
         <Grid container spacing={2}>
           {/* WIDTH */}
-          <Grid item md={6}>
+          <Grid item xs={12} sm={12} md={6}>
             <div className="text-field">
               <TextField
                 id="width-px"
@@ -102,7 +119,7 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
           </Grid>
 
           {/* HEIGHT */}
-          <Grid item md={6}>
+          <Grid item xs={12} sm={12} md={6}>
             <div className="text-field">
               <TextField
                 id="height-px"
@@ -119,7 +136,7 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
           </Grid>
 
           {/* AUTH-WIDTH WITH HEIGHT FOCUS */}
-          <Grid item md={6}>
+          <Grid item xs={6} sm={6} md={6}>
             <div className="text-field">
               <FormGroup>
                 <FormControlLabel
@@ -130,14 +147,14 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
                       onChange={handleSwitch}
                     />
                   }
-                  label="Auto Width"
+                  label="↔ Auto Width"
                 />
               </FormGroup>
             </div>
           </Grid>
 
           {/* AUTO-HEIGHT WITH WIDTH FOCUS */}
-          <Grid item md={6}>
+          <Grid item xs={6} sm={6} md={6}>
             <div className="text-field">
               <FormGroup>
                 <FormControlLabel
@@ -148,14 +165,14 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
                       onChange={handleSwitch}
                     />
                   }
-                  label="Auto Height"
+                  label={"↕ Auto Height"}
                 />
               </FormGroup>
             </div>
           </Grid>
 
           {/* BRIGHTNESS */}
-          <Grid item sm={12} md={6}>
+          <Grid item xs={12} sm={12} md={6}>
             <div className="text-field">
               <div className="sub-title">Brightness</div>
               <Slider
@@ -171,7 +188,7 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
           </Grid>
 
           {/* CONTRAST */}
-          <Grid item sm={12} md={6}>
+          <Grid item xs={12} sm={12} md={6}>
             <div className="text-field">
               <div className="sub-title">Contrast</div>
               <Slider
@@ -218,8 +235,53 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
             </FormGroup>
           </Grid>
 
+          {/* FORMAT */}
+          <Grid item xs={12} sm={12} md={6}>
+            <div className="text-field">
+              <div className="sub-title">Format</div>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Format</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={imageSettings.format}
+                  label="Format"
+                  onChange={handleSelectFormat}
+                >
+                  <MenuItem name="jpeg" value={"jpeg"}>
+                    JPEG
+                  </MenuItem>
+                  <MenuItem name="png" value={"png"}>
+                    PNG
+                  </MenuItem>
+                  <MenuItem name="gif" value={"gif"}>
+                    GIF
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+          </Grid>
+
+          {/* QUALITY */}
+          <Grid item xs={12} sm={12} md={6}>
+            <div className="text-field">
+              <div className="sub-title">Quality</div>
+              <Slider
+                aria-label="Volume"
+                name="quality"
+                value={imageSettings.quality}
+                step={5}
+                marks
+                min={0}
+                max={100}
+                onChange={handleChange}
+                valueLabelDisplay="auto"
+              />
+            </div>
+          </Grid>
+
           {/* PROCESS IMAGE */}
-          <Grid item md={6}>
+          <Grid item xs={4} sm={4} md={6}>
             <Button
               variant="contained"
               onClick={handleProcess}
@@ -230,7 +292,7 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
           </Grid>
 
           {/* DOWNLOAD */}
-          <Grid item md={6}>
+          <Grid item xs={4} sm={4} md={6}>
             <Button
               variant="contained"
               color="success"
@@ -241,6 +303,13 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
           </Grid>
 
           {/* IMAGE PREVIEW */}
+          <Grid item xs={12} sm={12} md={12}>
+            {isLoading ? (
+              <Box sx={{ width: "100%" }}>
+                <LinearProgress />
+              </Box>
+            ) : null}
+          </Grid>
           <Grid item md={12}>
             {processedImage ? (
               <img

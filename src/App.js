@@ -17,8 +17,8 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <SideMenu />
       <div className="App">
+        <SideMenu />
         <header className="title">
           <h1>Image Processor</h1>
         </header>

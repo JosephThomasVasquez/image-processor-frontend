@@ -9,7 +9,7 @@ import ImageIcon from "@mui/icons-material/Image";
 const OriginalImage = ({ imageFile, setImageFile }) => {
   useEffect(() => {
     if (imageFile.url) {
-      // console.log(imageFile);
+      console.log(imageFile);
     }
   }, [imageFile]);
 
@@ -44,7 +44,7 @@ const OriginalImage = ({ imageFile, setImageFile }) => {
                 className="text-fields"
                 name="url"
                 label="Image URL"
-                variant="outlined"
+                variant="standard"
                 value={imageFile?.url}
                 onChange={changeHandler}
                 fullWidth
