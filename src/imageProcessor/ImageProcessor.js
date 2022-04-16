@@ -3,15 +3,14 @@ import { processImage } from "../utils/api";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import Slider from "@mui/material/Slider";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Checkbox from "@mui/material/Checkbox";
-import CheckIcon from "@mui/icons-material/Check";
 
+import CropRotateIcon from "@mui/icons-material/CropRotate";
 import ImageIcon from "@mui/icons-material/Image";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
@@ -36,7 +35,7 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
 
   useEffect(() => {
     if (imageFile.url) {
-      console.log(imageFile.url);
+      // console.log(imageFile.url);
       setImageSettings({ ...imageSettings, url: imageFile.url });
     }
   }, [imageFile]);
@@ -82,16 +81,17 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
     <div>
       <Container maxWidth="xl">
         <div className="sub-title">ImageProcessor</div>
+
         <Grid container spacing={2}>
+          {/* WIDTH */}
           <Grid item md={6}>
             <div className="text-field">
               <TextField
-                id="outlined-basic"
+                id="width-px"
                 className="text-fields"
                 name="Width"
                 label="Width"
-                variant="outlined"
-                pattern="[0-9]{3}"
+                variant="standard"
                 value={imageSettings.Width}
                 onChange={handleChange}
                 disabled={imageSettings.aspectWidth}
@@ -99,14 +99,16 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
               />
             </div>
           </Grid>
+
+          {/* HEIGHT */}
           <Grid item md={6}>
             <div className="text-field">
               <TextField
-                id="outlined-basic"
+                id="height-px"
                 className="text-fields"
                 name="Height"
                 label="Height"
-                variant="outlined"
+                variant="standard"
                 value={imageSettings.Height}
                 onChange={handleChange}
                 disabled={imageSettings.aspectHeight}
@@ -114,6 +116,8 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
               />
             </div>
           </Grid>
+
+          {/* AUTH-WIDTH WITH HEIGHT FOCUS */}
           <Grid item md={6}>
             <div className="text-field">
               <FormGroup>
@@ -130,6 +134,8 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
               </FormGroup>
             </div>
           </Grid>
+
+          {/* AUTO-HEIGHT WITH WIDTH FOCUS */}
           <Grid item md={6}>
             <div className="text-field">
               <FormGroup>
@@ -147,7 +153,8 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
             </div>
           </Grid>
 
-          <Grid item md={12}>
+          {/* BRIGHTNESS */}
+          <Grid item sm={12} md={6}>
             <div className="text-field">
               <div className="sub-title">Brightness</div>
               <Slider
@@ -161,15 +168,35 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
               />
             </div>
           </Grid>
+
+          {/* CONTRAST */}
+          <Grid item sm={12} md={6}>
+            <div className="text-field">
+              <div className="sub-title">Contrast</div>
+              <Slider
+                aria-label="Volume"
+                name="contrast"
+                value={imageSettings.contrast}
+                min={0}
+                max={100}
+                onChange={handleChange}
+                valueLabelDisplay="auto"
+              />
+            </div>
+          </Grid>
+
+          {/* PROCESS IMAGE */}
           <Grid item md={6}>
             <Button
               variant="contained"
               onClick={handleProcess}
-              startIcon={<ImageIcon />}
+              startIcon={<CropRotateIcon />}
             >
               Process
             </Button>
           </Grid>
+
+          {/* GRAYSCALE */}
           <Grid item md={6}>
             <FormGroup>
               <FormControlLabel
@@ -184,6 +211,8 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
               />
             </FormGroup>
           </Grid>
+
+          {/* DOWNLOAD */}
           <Grid item md={6}>
             <Button
               variant="contained"
@@ -193,6 +222,8 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
               Download
             </Button>
           </Grid>
+
+          {/* IMAGE PREVIEW */}
           <Grid item md={12}>
             {processedImage ? (
               <img
