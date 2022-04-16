@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { processImage } from "../utils/api";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -10,10 +11,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import ImageIcon from "@mui/icons-material/Image";
 
-const ImageProcessor = () => {
+const ImageProcessor = ({ imageFile, setImageFile }) => {
   const initialSettings = {
     name: "default",
-    url: "",
+    url: imageFile.url,
     format: "",
     Width: 256,
     Height: 256,
@@ -26,20 +27,43 @@ const ImageProcessor = () => {
     compression: 0,
   };
   const [imageSettings, setImageSettings] = useState({ ...initialSettings });
+  const [processedImage, setProcessedImage] = useState(null);
 
-  const handleBrightness = ({ target }) => {
-    console.log(target);
-    setImageSettings({ ...imageSettings, [target.name]: target.value });
-  };
+  useEffect(() => {
+    console.log("processed", processedImage);
+  }, [processedImage]);
 
+  // handle value changes
   const handleChange = ({ target }) => {
     console.log(target.name);
     setImageSettings({ ...imageSettings, [target.name]: target.value });
   };
 
+  // Handle switches
   const handleSwitch = ({ target }) => {
     console.log(target.name);
     setImageSettings({ ...imageSettings, [target.name]: target.checked });
+  };
+
+  //   On image load get original dimensions
+  const imageLoader = () => {
+    setProcessedImage(processedImage);
+  };
+
+  const handleProcess = async () => {
+    const abortController = new AbortController();
+    try {
+      const response = await processImage(
+        imageSettings,
+        abortController.abort()
+      );
+
+      await response.json().then((data) => setProcessedImage(data.data));
+    } catch (error) {
+      console.log(error);
+    }
+
+    // console.log(imageFile.url);
   };
 
   return (
@@ -89,7 +113,7 @@ const ImageProcessor = () => {
                       onChange={handleSwitch}
                     />
                   }
-                  label="Aspect | Width"
+                  label="Auto Width"
                 />
               </FormGroup>
             </div>
@@ -105,7 +129,7 @@ const ImageProcessor = () => {
                       onChange={handleSwitch}
                     />
                   }
-                  label="Aspect | Height"
+                  label="Auto Height"
                 />
               </FormGroup>
             </div>
@@ -120,10 +144,29 @@ const ImageProcessor = () => {
                 value={imageSettings.brightness}
                 min={0}
                 max={100}
-                onChange={handleBrightness}
+                onChange={handleChange}
                 valueLabelDisplay="auto"
               />
             </div>
+          </Grid>
+          <Grid item md={2}>
+            <Button
+              variant="contained"
+              onClick={handleProcess}
+              startIcon={<ImageIcon />}
+            >
+              Update
+            </Button>
+          </Grid>
+          <Grid item md={12}>
+            {processedImage ? (
+              <img
+                onLoad={imageLoader}
+                className="original-image-file"
+                src={processedImage}
+                alt=""
+              />
+            ) : null}
           </Grid>
         </Grid>
       </Container>

@@ -6,27 +6,19 @@ import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import ImageIcon from "@mui/icons-material/Image";
 
-const OriginalImage = () => {
-  const initialFileData = {
-    url: "https://images.unsplash.com/photo-1521747116042-5a810fda9664?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80",
-    originalWidth: 0,
-    originalHeight: 0,
-  };
-
-  const [imageFile, setImageFile] = useState({ ...initialFileData });
-
+const OriginalImage = ({ imageFile, setImageFile }) => {
   useEffect(() => {
     if (imageFile.url) {
-      console.log(imageFile);
+      // console.log(imageFile);
     }
   }, [imageFile]);
 
   //   On file change handler
   const changeHandler = ({ target }) => {
     if (!imageFile.URL) {
-      setImageFile({ ...initialFileData, url: "" });
+      setImageFile({ ...imageFile, url: "" });
     }
-    setImageFile({ ...initialFileData, [target.name]: target.value });
+    setImageFile({ ...imageFile, [target.name]: target.value });
   };
 
   //   On image load get original dimensions
