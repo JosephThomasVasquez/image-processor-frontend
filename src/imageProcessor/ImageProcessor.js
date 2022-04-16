@@ -9,7 +9,11 @@ import Slider from "@mui/material/Slider";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+import Checkbox from "@mui/material/Checkbox";
+import CheckIcon from "@mui/icons-material/Check";
+
 import ImageIcon from "@mui/icons-material/Image";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 const ImageProcessor = ({ imageFile, setImageFile }) => {
   const initialSettings = {
@@ -24,13 +28,21 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
     rotation: 0,
     brightness: 0,
     contrast: 0,
+    grayscale: false,
     compression: 0,
   };
   const [imageSettings, setImageSettings] = useState({ ...initialSettings });
   const [processedImage, setProcessedImage] = useState(null);
 
   useEffect(() => {
-    console.log("processed", processedImage);
+    if (imageFile.url) {
+      console.log(imageFile.url);
+      setImageSettings({ ...imageSettings, url: imageFile.url });
+    }
+  }, [imageFile]);
+
+  useEffect(() => {
+    // console.log("processed", processedImage);
   }, [processedImage]);
 
   // handle value changes
@@ -41,7 +53,7 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
 
   // Handle switches
   const handleSwitch = ({ target }) => {
-    console.log(target.name);
+    console.log(target.checked);
     setImageSettings({ ...imageSettings, [target.name]: target.checked });
   };
 
@@ -149,13 +161,36 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
               />
             </div>
           </Grid>
-          <Grid item md={2}>
+          <Grid item md={6}>
             <Button
               variant="contained"
               onClick={handleProcess}
               startIcon={<ImageIcon />}
             >
-              Update
+              Process
+            </Button>
+          </Grid>
+          <Grid item md={6}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="grayscale"
+                    checked={imageSettings.grayscale}
+                    onChange={handleSwitch}
+                  />
+                }
+                label="Grayscale"
+              />
+            </FormGroup>
+          </Grid>
+          <Grid item md={6}>
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<FileDownloadIcon />}
+            >
+              Download
             </Button>
           </Grid>
           <Grid item md={12}>
