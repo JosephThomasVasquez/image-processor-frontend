@@ -18,7 +18,7 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
   const initialSettings = {
     name: "default",
     url: imageFile.url,
-    format: "",
+    format: "png",
     Width: 256,
     Height: 256,
     aspectWidth: false,
@@ -28,7 +28,8 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
     brightness: 0,
     contrast: 0,
     grayscale: false,
-    compression: 0,
+    inverted: false,
+    quality: 85,
   };
   const [imageSettings, setImageSettings] = useState({ ...initialSettings });
   const [processedImage, setProcessedImage] = useState(null);
@@ -185,19 +186,8 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
             </div>
           </Grid>
 
-          {/* PROCESS IMAGE */}
-          <Grid item md={6}>
-            <Button
-              variant="contained"
-              onClick={handleProcess}
-              startIcon={<CropRotateIcon />}
-            >
-              Process
-            </Button>
-          </Grid>
-
           {/* GRAYSCALE */}
-          <Grid item md={6}>
+          <Grid item md={3}>
             <FormGroup>
               <FormControlLabel
                 control={
@@ -210,6 +200,33 @@ const ImageProcessor = ({ imageFile, setImageFile }) => {
                 label="Grayscale"
               />
             </FormGroup>
+          </Grid>
+
+          {/* INVERTED */}
+          <Grid item md={3}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="inverted"
+                    checked={imageSettings.inverted}
+                    onChange={handleSwitch}
+                  />
+                }
+                label="Invert"
+              />
+            </FormGroup>
+          </Grid>
+
+          {/* PROCESS IMAGE */}
+          <Grid item md={6}>
+            <Button
+              variant="contained"
+              onClick={handleProcess}
+              startIcon={<CropRotateIcon />}
+            >
+              Process
+            </Button>
           </Grid>
 
           {/* DOWNLOAD */}
